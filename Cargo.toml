@@ -2,7 +2,9 @@
 name = "task-list"
 license = "MIT"
 description = "A simple program to track tasks to do regularly. It does not save completed tasks."
-repository = ""
+repository = "https://github.com/ThePuzzlemaker/task-list"
+keywords = ["tasks","todo"]
+categories = ["command-line-utilities"]
 readme = "README.md"
 version = "1.0.0"
 authors = ["ThePuzzlemaker <tpzker@thepuzzlemaker.info>"]
