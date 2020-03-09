@@ -1,0 +1,15 @@
+[package]
+name = "task-list"
+license = "MIT"
+description = "A simple program to track tasks to do regularly. It does not save completed tasks."
+repository = ""
+readme = "README.md"
+version = "1.0.0"
+authors = ["ThePuzzlemaker <tpzker@thepuzzlemaker.info>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dirs = "2.0.2"
+pancurses = "0.16.1"
