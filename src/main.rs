@@ -1,17 +1,16 @@
+extern crate clap;
 extern crate dirs;
 extern crate pancurses;
-extern crate clap;
 
-use std::error::Error;
+use clap::{App, Arg};
+use pancurses::*;
 use std::fs::File;
 use std::io::prelude::*;
-use pancurses::*;
-use clap::{Arg, App};
 
 fn main() {
     let matches = App::new("Task List")
-                    .version("1.0.1")
-                    .author("ThePuzzlemaker <tpzker@thepuzzleamker.info>")
+                    .version("1.0.2")
+                    .author("ThePuzzlemaker <tpzker@thepuzzlemaker.info>")
                     .about("A simple program to track tasks to do regularly. It does not save completed tasks.")
                     .arg(Arg::with_name("custom_chars")
                             .short("c")
@@ -43,11 +42,10 @@ fn main() {
         if value.len() != 2 {
             panic!("Error: only two characters can be provided for custom characters.");
         } else {
-            chars.push(value.chars().nth(0).unwrap_or('X'));
+            chars.push(value.chars().next().unwrap_or('X'));
             chars.push(value.chars().nth(1).unwrap_or('√'));
         }
     }
-
 
     let window = initscr();
     noecho();
@@ -64,17 +62,20 @@ fn main() {
     init_pair(2, COLOR_YELLOW, -1);
     init_pair(3, COLOR_GREEN, -1);
     init_pair(4, COLOR_RED, -1);
-    
+
     window.attron(COLOR_PAIR(1));
     window.attron(A_BOLD);
-    window.addstr("Welcome to Task List v1.0.1. Press any key to mark a task as complete.\n");
+    window.addstr("Welcome to Task List v1.0.2. Press any key to mark a task as complete.\n");
     window.attroff(COLOR_PAIR(1));
     window.attroff(A_BOLD);
     window.refresh();
     let path_opt = dirs::home_dir();
     let mut path = match path_opt {
         Some(path2) => path2,
-        None => { endwin(); panic!("Error: Could not get home directory!"); }
+        None => {
+            endwin();
+            panic!("Error: Could not get home directory!");
+        }
     };
     path.push(".task-list");
     let display = path.display();
@@ -82,19 +83,25 @@ fn main() {
 
     if !path.exists() {
         endwin();
-        panic!("{} does not exist. To add tasks, simply create the file and add lines with text.", display);
+        panic!(
+            "{} does not exist. To add tasks, simply create the file and add lines with text.",
+            display
+        );
     }
 
     let mut file = match File::open(&path) {
-        Err(why) => { endwin(); panic!("Error: couldn't open {}: {}", display, why.description()) },
+        Err(why) => {
+            endwin();
+            panic!("Error: couldn't open {}: {}", display, why)
+        }
         Ok(file) => file,
     };
 
     let mut s = String::new();
-    match file.read_to_string(&mut s) {
-        Err(why) => { endwin(); panic!("Error: couldn't read {}: {}", display, why.description()) },
-        Ok(_) => (),
-    };
+    if let Err(why) = file.read_to_string(&mut s) {
+        endwin();
+        panic!("Error: couldn't read {}: {}", display, why);
+    }
 
     if s.lines().count() == 0 {
         endwin();
@@ -115,7 +122,7 @@ fn main() {
         window.attron(COLOR_PAIR(3));
         window.mvaddstr(current_y, 0, &format!("[{}] ", chars[1]));
         window.attroff(COLOR_PAIR(3));
-        current_y+=1;
+        current_y += 1;
     }
 
     window.attron(COLOR_PAIR(3));
@@ -123,5 +130,4 @@ fn main() {
     window.attroff(COLOR_PAIR(3));
     window.getch();
     endwin();
-
 }

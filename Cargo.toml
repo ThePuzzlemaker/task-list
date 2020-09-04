@@ -6,7 +6,7 @@ repository = "https://github.com/ThePuzzlemaker/task-list"
 keywords = ["tasks","todo"]
 categories = ["command-line-utilities"]
 readme = "README.md"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["ThePuzzlemaker <tpzker@thepuzzlemaker.info>"]
 edition = "2018"
 
