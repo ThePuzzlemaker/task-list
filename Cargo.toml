@@ -15,4 +15,4 @@ edition = "2018"
 [dependencies]
 dirs = "2.0.2"
 pancurses = "0.16.1"
-clap = "2.33.0"
+clap = "2.33.3"
